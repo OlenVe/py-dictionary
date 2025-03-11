@@ -3,7 +3,7 @@ class Dictionary:
         self.size = 8
         self.basket = [None] * self.size
         self.count = 0
-        self.load = 0.67
+        self.load = 2 / 3
 
     def __setitem__(self, key: int, value: any) -> None:
 
@@ -16,16 +16,12 @@ class Dictionary:
             self.__resize__()
 
         index = hash(key) % self.size
-        count_load = 0
 
         while self.basket[index] is not None:
             if self.basket[index][0] == key:
                 self.basket[index][1] = value
                 return
             index = (index + 1) % self.size
-            count_load += 1
-            if count_load > self.load * self.size:
-                self.__resize__()
 
         self.basket[index] = [key, value]
         self.count += 1
@@ -47,7 +43,7 @@ class Dictionary:
     def __len__(self) -> int:
         return self.count
 
-    def __resize__(self) -> int:
+    def __resize__(self) -> None:
         old_basket = self.basket
         self.size = self.size * 2
         self.basket = [None] * self.size
